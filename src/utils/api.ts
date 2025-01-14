@@ -50,4 +50,23 @@ export const api = {
     
     return response.json();
   },
+
+  sendMessage: async (content: string) => {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/messages`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ content }),
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Failed to send message');
+    }
+    
+    return response.json();
+  },
 };

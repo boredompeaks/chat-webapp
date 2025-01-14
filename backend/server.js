@@ -121,11 +121,44 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-// Protected routes
+// Message routes
+app.post('/api/messages', authenticateToken, async (req, res) => {
+  try {
+    const { content } = req.body;
+    const senderId = req.user.id;
+    
+    if (!content) {
+      return res.status(400).json({ error: 'Message content is required' });
+    }
+    
+    const [result] = await pool.execute(
+      'INSERT INTO messages (id, sender_id, content) VALUES (UUID(), ?, ?)',
+      [senderId, content]
+    );
+    
+    // Fetch the created message
+    const [messages] = await pool.execute(
+      `SELECT m.*, u.username 
+       FROM messages m 
+       JOIN users u ON m.sender_id = u.id 
+       WHERE m.id = LAST_INSERT_ID()`
+    );
+    
+    res.status(201).json(messages[0]);
+  } catch (error) {
+    console.error('Error creating message:', error);
+    res.status(500).json({ error: 'Failed to create message' });
+  }
+});
+
 app.get('/api/messages', authenticateToken, async (req, res) => {
   try {
     const [messages] = await pool.execute(
-      'SELECT * FROM messages ORDER BY created_at DESC LIMIT 100'
+      `SELECT m.*, u.username 
+       FROM messages m 
+       JOIN users u ON m.sender_id = u.id 
+       ORDER BY m.created_at DESC 
+       LIMIT 100`
     );
     res.json(messages);
   } catch (error) {
