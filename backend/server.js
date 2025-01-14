@@ -132,11 +132,10 @@ app.post('/api/messages', authenticateToken, async (req, res) => {
     }
     
     const [result] = await pool.execute(
-      'INSERT INTO messages (id, sender_id, content) VALUES (UUID(), ?, ?)',
+      'INSERT INTO messages (id, sender_id, content, status) VALUES (UUID(), ?, ?, "sent")',
       [senderId, content]
     );
     
-    // Fetch the created message
     const [messages] = await pool.execute(
       `SELECT m.*, u.username 
        FROM messages m 
@@ -148,6 +147,49 @@ app.post('/api/messages', authenticateToken, async (req, res) => {
   } catch (error) {
     console.error('Error creating message:', error);
     res.status(500).json({ error: 'Failed to create message' });
+  }
+});
+
+app.patch('/api/messages/:id/status', authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    
+    await pool.execute(
+      'UPDATE messages SET status = ? WHERE id = ?',
+      [status, id]
+    );
+    
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error updating message status:', error);
+    res.status(500).json({ error: 'Failed to update message status' });
+  }
+});
+
+app.post('/api/messages/:id/react', authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { reaction } = req.body;
+    const userId = req.user.id;
+    
+    const [message] = await pool.execute(
+      'SELECT reactions FROM messages WHERE id = ?',
+      [id]
+    );
+    
+    let reactions = message[0].reactions ? JSON.parse(message[0].reactions) : {};
+    reactions[userId] = reaction;
+    
+    await pool.execute(
+      'UPDATE messages SET reactions = ? WHERE id = ?',
+      [JSON.stringify(reactions), id]
+    );
+    
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error adding reaction:', error);
+    res.status(500).json({ error: 'Failed to add reaction' });
   }
 });
 
