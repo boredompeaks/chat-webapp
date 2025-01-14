@@ -1,9 +1,49 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { LogIn, KeyRound } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { toast } from "@/hooks/use-toast";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      // Here you would typically make an API call to verify credentials
+      // For now, we'll simulate a successful login
+      if (!email || !password) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Please fill in all fields",
+        });
+        return;
+      }
+
+      // Simulate login success
+      localStorage.setItem("isAuthenticated", "true");
+      localStorage.setItem("userId", "1");
+      
+      toast({
+        title: "Success",
+        description: "Login successful! Welcome back.",
+      });
+      
+      navigate("/");
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to login",
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-900 to-blue-700 relative flex items-center justify-center p-4">
       <div 
@@ -19,19 +59,23 @@ const Login = () => {
           <p className="text-white/80">Sign in to continue</p>
         </div>
         
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             type="email"
             placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="bg-white/20 text-white placeholder-white/60 border-white/20"
           />
           <Input
             type="password"
             placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             className="bg-white/20 text-white placeholder-white/60 border-white/20"
           />
           
-          <Button className="w-full" size="lg">
+          <Button type="submit" className="w-full" size="lg">
             <LogIn className="mr-2 h-4 w-4" />
             Sign In
           </Button>
