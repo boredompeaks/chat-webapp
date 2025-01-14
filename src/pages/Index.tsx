@@ -10,7 +10,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { query } from "@/utils/dbConnection";
 
 interface Message {
-  id: number;
+  id: string;
   content: string;
   timestamp: string;
   isOwn: boolean;
@@ -144,6 +144,7 @@ const Index = () => {
             {messages.map((message) => (
               <ChatMessage
                 key={message.id}
+                id={message.id}
                 content={message.content}
                 timestamp={message.timestamp}
                 isOwn={message.isOwn}
