@@ -1,21 +1,26 @@
-import mysql from 'mysql2/promise';
+// Mock implementation for client-side
+interface QueryResult {
+  id: string;
+  conversation_id: string;
+  sender_id: string;
+  content: string;
+  content_type: 'text' | 'image' | 'file' | 'voice';
+  created_at: string;
+}
 
-const pool = mysql.createPool({
-  host: '193.203.184.196',
-  user: 'u286068293_Malkani',
-  password: 'bAbkywW3nwv3ZER',
-  database: 'u286068293_Chatdb',
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
-});
-
-export const query = async (sql: string, params?: any[]): Promise<any> => {
-  try {
-    const [results] = await pool.execute(sql, params);
-    return results;
-  } catch (error) {
-    console.error('Database query error:', error);
-    throw error;
-  }
+export const query = async (sql: string, params?: any[]): Promise<QueryResult[]> => {
+  // For development, return mock data
+  console.log('Mock query executed:', sql, params);
+  
+  // Mock messages data
+  return [
+    {
+      id: '1',
+      conversation_id: 'default',
+      sender_id: localStorage.getItem('userId') || '',
+      content: 'Hello! This is a mock message.',
+      content_type: 'text',
+      created_at: new Date().toISOString()
+    }
+  ];
 };
