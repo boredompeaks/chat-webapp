@@ -119,17 +119,17 @@ const Index = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-b from-blue-900 to-blue-700 overflow-hidden">
+    <div className="relative min-h-screen overflow-hidden">
       <div 
         className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5')] 
-        bg-cover bg-center bg-no-repeat"
-        style={{ filter: 'brightness(0.6)' }}
+        bg-cover bg-center bg-no-repeat opacity-80"
       />
+      <div className="absolute inset-0 backdrop-blur-sm bg-black/30" />
       
       <div className="absolute top-4 right-4 z-10">
         <Button 
           variant="ghost" 
-          className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white"
+          className="bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white"
           onClick={handleLogout}
         >
           <LogOut className="mr-2 h-4 w-4" />
@@ -139,7 +139,7 @@ const Index = () => {
 
       <div className="flex h-screen relative z-0">
         <ChatSidebar isCollapsed={isCollapsed} onToggle={() => setIsCollapsed(!isCollapsed)} />
-        <div className="flex-1 flex flex-col backdrop-blur-md bg-white/30">
+        <div className="flex-1 flex flex-col bg-white/10 backdrop-blur-md">
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
             {messages.map((message) => (
               <ChatMessage

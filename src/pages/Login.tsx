@@ -51,11 +51,12 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-900 to-blue-700 relative flex items-center justify-center p-4">
+    <div className="min-h-screen relative flex items-center justify-center p-4">
       <div 
         className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05')] 
-        bg-cover bg-center bg-no-repeat opacity-50"
+        bg-cover bg-center bg-no-repeat"
       />
+      <div className="absolute inset-0 backdrop-blur-sm bg-black/40" />
       
       <div className="relative z-10 w-full max-w-md p-8 bg-white/10 backdrop-blur-lg rounded-xl shadow-2xl">
         <div className="flex flex-col items-center mb-8">
