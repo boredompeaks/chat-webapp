@@ -2,10 +2,10 @@ import mysql from 'mysql2/promise';
 
 export const createPool = () => {
   return mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    host: '193.203.184.196',
+    user: 'u286068293_Malkani',
+    password: 'bAbkywW3nwv3ZER',
+    database: 'u286068293_Chatdb',
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
@@ -17,7 +17,7 @@ export const initDatabase = async () => {
   const pool = createPool();
   
   try {
-    // Create Users table
+    // Create Users table if it doesn't exist
     await pool.execute(`
       CREATE TABLE IF NOT EXISTS users (
         id VARCHAR(36) PRIMARY KEY,
@@ -32,7 +32,7 @@ export const initDatabase = async () => {
       )
     `);
 
-    // Create Conversations table
+    // Create Conversations table if it doesn't exist
     await pool.execute(`
       CREATE TABLE IF NOT EXISTS conversations (
         id VARCHAR(36) PRIMARY KEY,
@@ -43,7 +43,7 @@ export const initDatabase = async () => {
       )
     `);
 
-    // Create Messages table
+    // Create Messages table if it doesn't exist
     await pool.execute(`
       CREATE TABLE IF NOT EXISTS messages (
         id VARCHAR(36) PRIMARY KEY,
@@ -52,15 +52,13 @@ export const initDatabase = async () => {
         content TEXT,
         content_type ENUM('text', 'image', 'file') DEFAULT 'text',
         is_read BOOLEAN DEFAULT false,
-        is_one_time_view BOOLEAN DEFAULT false,
-        encryption_key VARCHAR(255),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (conversation_id) REFERENCES conversations(id),
         FOREIGN KEY (sender_id) REFERENCES users(id)
       )
     `);
 
-    // Create Conversation Participants table
+    // Create Conversation Participants table if it doesn't exist
     await pool.execute(`
       CREATE TABLE IF NOT EXISTS conversation_participants (
         conversation_id VARCHAR(36) NOT NULL,
@@ -69,19 +67,6 @@ export const initDatabase = async () => {
         PRIMARY KEY (conversation_id, user_id),
         FOREIGN KEY (conversation_id) REFERENCES conversations(id),
         FOREIGN KEY (user_id) REFERENCES users(id)
-      )
-    `);
-
-    // Create Media table
-    await pool.execute(`
-      CREATE TABLE IF NOT EXISTS media (
-        id VARCHAR(36) PRIMARY KEY,
-        message_id VARCHAR(36) NOT NULL,
-        url VARCHAR(255) NOT NULL,
-        type VARCHAR(50) NOT NULL,
-        size INT,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (message_id) REFERENCES messages(id)
       )
     `);
 
