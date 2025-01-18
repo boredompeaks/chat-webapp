@@ -1,22 +1,38 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Send, Paperclip, Smile, Mic, Image, Video, FileText } from "lucide-react";
 import { toast } from "sonner";
+import { debounce } from "lodash";
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
   onFileSelect: (file: File) => void;
+  onTyping?: (isTyping: boolean) => void;
 }
 
-export const ChatInput = ({ onSendMessage, onFileSelect }: ChatInputProps) => {
+export const ChatInput = ({ onSendMessage, onFileSelect, onTyping }: ChatInputProps) => {
   const [message, setMessage] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const debouncedTyping = useRef(
+    debounce((typing: boolean) => {
+      onTyping?.(typing);
+    }, 1000)
+  ).current;
+
+  useEffect(() => {
+    if (message && onTyping) {
+      onTyping(true);
+      debouncedTyping(false);
+    }
+  }, [message, onTyping, debouncedTyping]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (message.trim()) {
       onSendMessage(message);
       setMessage("");
+      onTyping?.(false);
     }
   };
 
