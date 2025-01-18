@@ -44,8 +44,8 @@ export const api = {
     });
     
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Failed to fetch messages');
+      console.error('Failed to fetch messages:', await response.text());
+      return []; // Return empty array instead of throwing
     }
     
     return response.json();
@@ -63,8 +63,8 @@ export const api = {
     });
     
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Failed to send message');
+      console.error('Failed to send message:', await response.text());
+      return null; // Return null instead of throwing
     }
     
     return response.json();
@@ -82,8 +82,8 @@ export const api = {
     });
     
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Failed to update message status');
+      console.error('Failed to update message status:', await response.text());
+      return false;
     }
     
     return response.json();
@@ -101,8 +101,8 @@ export const api = {
     });
     
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Failed to add reaction');
+      console.error('Failed to add reaction:', await response.text());
+      return false;
     }
     
     return response.json();
