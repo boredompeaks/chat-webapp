@@ -68,13 +68,13 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-900 to-blue-700 relative flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 relative flex items-center justify-center p-4">
       <div 
         className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05')] 
-        bg-cover bg-center bg-no-repeat opacity-50"
+        bg-cover bg-center bg-no-repeat opacity-30"
       />
       
-      <div className="relative z-10 w-full max-w-md p-8 bg-white/10 backdrop-blur-lg rounded-xl shadow-2xl">
+      <div className="relative z-10 w-full max-w-md p-8 bg-black/20 backdrop-blur-xl rounded-xl shadow-2xl border border-white/10">
         <div className="flex flex-col items-center mb-8">
           <UserPlus className="h-16 w-16 text-white mb-4" />
           <h1 className="text-3xl font-bold text-white mb-2">Create Account</h1>
@@ -88,7 +88,7 @@ const Register = () => {
               placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="bg-white/20 text-white placeholder-white/60 border-white/20 h-12"
+              className="bg-white/10 text-white placeholder-white/60 border-white/20 h-12"
               disabled={isLoading}
             />
           </div>
@@ -99,7 +99,7 @@ const Register = () => {
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="bg-white/20 text-white placeholder-white/60 border-white/20 h-12"
+              className="bg-white/10 text-white placeholder-white/60 border-white/20 h-12"
               disabled={isLoading}
             />
           </div>
@@ -110,7 +110,7 @@ const Register = () => {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="bg-white/20 text-white placeholder-white/60 border-white/20 h-12"
+              className="bg-white/10 text-white placeholder-white/60 border-white/20 h-12"
               disabled={isLoading}
             />
           </div>
@@ -121,14 +121,14 @@ const Register = () => {
               placeholder="Confirm Password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="bg-white/20 text-white placeholder-white/60 border-white/20 h-12"
+              className="bg-white/10 text-white placeholder-white/60 border-white/20 h-12"
               disabled={isLoading}
             />
           </div>
           
           <Button 
             type="submit" 
-            className="w-full h-12 text-lg font-semibold transition-all duration-300 hover:scale-105"
+            className="w-full h-12 text-lg font-semibold transition-all duration-300 hover:scale-105 bg-white/10 hover:bg-white/20"
             size="lg"
             disabled={isLoading}
           >

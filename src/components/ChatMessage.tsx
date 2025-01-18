@@ -67,8 +67,8 @@ export const ChatMessage = ({
           className={cn(
             "max-w-[70%] rounded-2xl px-4 py-2 backdrop-blur-sm",
             isOwn
-              ? "bg-primary/80 text-white rounded-br-none"
-              : "bg-white/80 text-gray-800 rounded-bl-none"
+              ? "bg-primary/60 text-white rounded-br-none"
+              : "bg-white/60 text-gray-800 rounded-bl-none"
           )}
         >
           <div 
