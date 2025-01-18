@@ -4,7 +4,6 @@ import { UserPlus } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
-import { api } from "@/utils/api";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -20,7 +19,7 @@ const Register = () => {
     try {
       setIsLoading(true);
       
-      // Validate inputs
+      // Basic validation remains for UI testing
       if (!username || !email || !password || !confirmPassword) {
         toast({
           variant: "destructive",
@@ -48,7 +47,11 @@ const Register = () => {
         return;
       }
 
-      await api.register(username, email, password);
+      // Temporarily bypass registration
+      console.log("Registration bypassed for UI testing");
+      console.log("Username:", username);
+      console.log("Email:", email);
+      console.log("Password:", password);
       
       toast({
         title: "Success",
@@ -57,10 +60,11 @@ const Register = () => {
       
       navigate("/login");
     } catch (error) {
+      console.error("Registration error:", error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: error instanceof Error ? error.message : "Failed to register",
+        description: "Failed to register",
       });
     } finally {
       setIsLoading(false);

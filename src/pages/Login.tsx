@@ -4,7 +4,6 @@ import { LogIn, KeyRound } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
-import { api } from "@/utils/api";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -18,19 +17,13 @@ const Login = () => {
     try {
       setIsLoading(true);
       
-      if (!email || !password) {
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Please fill in all fields",
-        });
-        return;
-      }
-
-      const response = await api.login(email, password);
+      // Temporarily bypass authentication
+      console.log("Login bypassed for UI testing");
+      console.log("Email:", email);
+      console.log("Password:", password);
       
-      localStorage.setItem("token", response.token);
-      localStorage.setItem("userId", response.user.id);
+      // Simulate successful login
+      localStorage.setItem("userId", "test-user-id");
       localStorage.setItem("isAuthenticated", "true");
       
       toast({
@@ -40,10 +33,11 @@ const Login = () => {
       
       navigate("/");
     } catch (error) {
+      console.error("Login error:", error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: error instanceof Error ? error.message : "Failed to login",
+        description: "Failed to login",
       });
     } finally {
       setIsLoading(false);
